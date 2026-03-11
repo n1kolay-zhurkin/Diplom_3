@@ -3,9 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
+
 class IngredientModal(BasePage):
     MODAL = (By.XPATH, "//div[contains(@class, 'Modal') and contains(., 'Детали ингредиента')]")
-    CLOSE_BUTTON = (By.XPATH, "//div[contains(@class, 'Modal')]//button//*[local-name()='svg']")
+    CLOSE_BUTTON = (By.XPATH, "//div[contains(@class, 'Modal')]//button")
 
     @allure.step("Проверить отображение модального окна")
     def is_displayed(self):

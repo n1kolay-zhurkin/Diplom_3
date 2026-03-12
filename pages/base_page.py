@@ -56,3 +56,14 @@ class BasePage:
     def scroll_to_element(self, element):
         """Скролл к элементу - принимает WebElement, не локатор"""
         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+
+    @allure.step("Получить текущий URL")
+    def get_current_url(self):
+        """Возвращает текущий URL страницы"""
+        return self.driver.current_url
+
+    @allure.step("Нажать клавишу ESC")
+    def press_escape(self):
+        """Нажимает клавишу ESC на странице"""
+        from selenium.webdriver.common.keys import Keys
+        self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)

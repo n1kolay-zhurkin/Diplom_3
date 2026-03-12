@@ -41,15 +41,17 @@ def driver(request):
 def logged_in_user(driver):
     """Фикстура для авторизованного пользователя"""
     main_page = MainPage(driver)
-    main_page.driver.get(Urls.BASE)
-
+    login_page = LoginPage(driver)
+    
     # Переход на страницу логина
-    main_page.driver.get(Urls.LOGIN)
+    driver.get(Urls.LOGIN)
 
     # Логин
-    login_page = LoginPage(driver)
     login_page.login(TestData.USER_EMAIL, TestData.USER_PASSWORD)
 
+    # После логина возвращаемся на главную
+    driver.get(Urls.BASE)
+    
     # Переход в ленту заказов
     main_page.click_order_feed()
     feed_page = OrderFeedPage(driver)

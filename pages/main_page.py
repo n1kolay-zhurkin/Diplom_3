@@ -1,9 +1,7 @@
 import allure
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from pages.base_page import BasePage
 
 
@@ -70,6 +68,8 @@ class MainPage(BasePage):
         target = self.find_element(self.BURGER_CONSTRUCTOR_AREA)
 
         self.scroll_to_element(ingredient)
+        # Небольшая пауза для стабилизации после скролла
+        self.wait.until(EC.visibility_of(ingredient))
 
         before = self.get_ingredient_counter(alt_text)
 
@@ -84,8 +84,8 @@ class MainPage(BasePage):
     def click_checkout(self):
         self.click(self.CHECKOUT_BUTTON)
         self.wait.until(EC.visibility_of_element_located(self.ORDER_MODAL))
-        # Небольшая пауза для стабилизации модального окна
-        time.sleep(1)
+        # Ждем появления номера в модальном окне
+        self.wait.until(EC.visibility_of_element_located(self.ORDER_MODAL_NUMBER))
 
     @allure.step("Получить номер заказа")
     def get_order_number(self):
@@ -110,9 +110,6 @@ class MainPage(BasePage):
     @allure.step("Закрыть модальное окно заказа")
     def close_order_modal(self):
         """Закрывает модальное окно с номером заказа"""
-        # Небольшая пауза для стабилизации
-        time.sleep(1)
-        
         try:
             # Находим крестик
             close_button = self.find_element(self.CLOSE_MODAL_BUTTON)
@@ -130,6 +127,6 @@ class MainPage(BasePage):
                 self.driver.execute_script("arguments[0].click();", overlay)
                 self.wait.until(EC.invisibility_of_element_located(self.ORDER_MODAL))
             except Exception:
-                # Если ничего не помогло, нажимаем ESC
-                self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)
+                # Если ничего не помогло, нажимаем ESC через метод BasePage
+                self.press_escape()
                 self.wait.until(EC.invisibility_of_element_located(self.ORDER_MODAL))

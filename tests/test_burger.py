@@ -19,7 +19,8 @@ class TestMainFunctionality:
         main_page.click_order_feed()
         main_page.click_constructor()
 
-        assert main_page.driver.current_url == Urls.BASE
+        # Используем метод из BasePage
+        assert main_page.get_current_url() == Urls.BASE
 
     @allure.title("Тест 2: Переход на Ленту заказов")
     def test_order_feed_navigation(self, driver):
@@ -28,7 +29,8 @@ class TestMainFunctionality:
 
         main_page.click_order_feed()
 
-        assert "/feed" in main_page.driver.current_url
+        # Используем метод из BasePage
+        assert "/feed" in main_page.get_current_url()
 
     @allure.title("Тест 3: Открытие/закрытие модального окна")
     def test_ingredient_modal_open_close(self, driver):
